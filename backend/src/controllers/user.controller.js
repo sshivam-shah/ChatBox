@@ -9,7 +9,7 @@ export const getRecommendedUsers = async (req, res) => {
     const recommendedUsers = await User.find({
       $and: [
         { _id: { $ne: currentUserId } }, // Exclude current user
-        { id: { $nin: currentUser.friends } }, // Exclude friends
+        { _id: { $nin: currentUser.friends } }, // Exclude friends
         { isOnboarded: true }, // Only onboarded users
       ],
     });
@@ -127,12 +127,12 @@ export const getFriendRequests = async (req, res) => {
       "fullName profilePic nativeLanguage learningLanguage"
     );
 
-    const acceptReqs = await FriendRequest.find({
+    const acceptedReqs = await FriendRequest.find({
       sender: req.user.id,
       status: "accepted",
     }).populate("recipient", "fullName profilePic");
 
-    res.status(200).json({ incomingReqs, acceptReqs });
+    res.status(200).json({ incomingReqs, acceptedReqs });
   } catch (error) {
     console.error("Error in getFriendRequests controller:", error);
     res.status(500).json({ message: "Internal server error" });
@@ -145,7 +145,7 @@ export const getOutgoingFriendReqs = async (req, res) => {
       sender: req.user.id,
       status: "pending",
     }).populate(
-      "recipent",
+      "recipient",
       "fullName profilePic nativeLanguage learningLanguage"
     );
     res.status(200).json(outgoingRequests);

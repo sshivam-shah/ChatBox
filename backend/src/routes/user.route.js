@@ -11,15 +11,16 @@ import {
 
 const router = express.Router();
 
-router.use(protectRoute); // Apply protectRoute middleware to all routes in this file
+// apply auth middleware to all routes
+router.use(protectRoute);
 
 router.get("/", getRecommendedUsers);
 router.get("/friends", getMyFriends);
 
-router.post("friend-request/:id", sendFriendRequest);
-router.put("friend-request/accept:id", acceptFriendRequest);
+router.post("/friend-request/:id", sendFriendRequest);
+router.put("/friend-request/:id/accept", acceptFriendRequest);
 
-router.get("/friend- requests", getFriendRequests);
+router.get("/friend-requests", getFriendRequests);
 router.get("/outgoing-friend-requests", getOutgoingFriendReqs);
 
 export default router;
